@@ -8,25 +8,33 @@ public class Canon : MonoBehaviour
 	[SerializeField]
 	GameObject mBullet;
 
-	void Start()
-	{
-		mBullet.SetActive(false);
-	}
+	[SerializeField]
+	GameObject mFireStart;
+
+	float mPower;
 	void Update()
 	{
 		RotMouseCursor();
 		if(Input.GetButtonDown("Fire1"))
 		{
+			HoldBegin();
+		}
+		if(Input.GetButton("Fire1"))
+		{
+			Holding();
+		}
+		if(Input.GetButtonUp("Fire1"))
+		{
 			GenerateBullet();
 		}
+		mDebug.text = "Power" + mPower;
 	}
 	void RotMouseCursor()
 	{
 		var pos = MousePosition();
 		var vec = pos - transform.position;
-		mDebug.text = pos.ToString();
 		var euler = transform.eulerAngles;
-		euler.z = Mathf.Clamp(Mathf.Rad2Deg * Mathf.Atan2(vec.y, vec.x), 0.0f, 90.0f);
+		euler.x = -Mathf.Clamp(Mathf.Rad2Deg * Mathf.Atan2(vec.y, vec.x), 0.0f, 90.0f);
 		transform.eulerAngles = euler;
 	}
 	Vector3 MousePosition()
@@ -42,10 +50,21 @@ public class Canon : MonoBehaviour
 		{
 			return;
 		}
-		var bullet = Instantiate(mBullet);
-		bullet.SetActive(true);
-		bullet.transform.position = transform.position;
-		var rigid = bullet.GetComponent<Rigidbody>();
-		rigid.AddForce(transform.forward);
+		var rigid = mBullet.GetComponent<Rigidbody>();
+		if(rigid == null)
+		{
+			return;
+		}
+		rigid.Sleep();
+		rigid.MovePosition(mFireStart.transform.position);
+		rigid.AddForce(transform.forward * mPower);
+	}
+	void HoldBegin()
+	{
+		mPower = 0.0f;
+	}
+	void Holding()
+	{
+		mPower += 10.0f;
 	}
 }
