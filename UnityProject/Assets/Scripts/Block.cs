@@ -5,19 +5,20 @@ public class Block : MonoBehaviour
 	[SerializeField]
 	List<GameObject> mBlocks;
 	GameObject mStageInstance;
-	public int mStage;
+	int mStage;
 	public void NextStage()
 	{
 		mStage += 1;
-		mStage = Mathf.Clamp(mStage, 0, mBlocks.Count);
-	}
-	void Start()
-	{
-		foreach (var block in mBlocks)
-		{
-			block.SetActive(false);
-		}
 		ResetBlock();
+	}
+	public void InitStage()
+	{
+		mStage = 0;
+		ResetBlock();
+	}
+	public bool IsLast()
+	{
+		return mStage >= mBlocks.Count -1;
 	}
 	public void ResetBlock()
 	{
@@ -32,5 +33,13 @@ public class Block : MonoBehaviour
 		var block = mBlocks[mStage];
 		mStageInstance = Instantiate(block);
 		mStageInstance.SetActive(true);
+	}
+	void Start()
+	{
+		foreach(var block in mBlocks)
+		{
+			block.SetActive(false);
+		}
+		ResetBlock();
 	}
 }

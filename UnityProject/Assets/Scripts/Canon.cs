@@ -16,6 +16,47 @@ public class Canon : MonoBehaviour
 	float mPower;
 	void Update()
 	{
+		switch(mState.mState)
+		{
+		case GameState.State.GameWait:
+		{
+			Game();
+			break;
+		}
+		case GameState.State.ClearWait:
+		{
+			if(mBlock.IsLast())
+			{
+				if(Input.GetButtonDown("Fire1"))
+				{
+					HoldBegin();
+					mState.Complete();
+				}
+			}
+			else
+			{
+				if(Input.GetButtonDown("Fire1"))
+				{
+					HoldBegin();
+					mBlock.NextStage();
+					mState.Game();
+				}
+			}
+			break;
+		}
+		case GameState.State.CompleteWait:
+		{
+			if(Input.GetButtonDown("Fire1"))
+			{
+				mBlock.InitStage();
+				mState.Game();
+			}
+			break;
+		}
+		}
+	}
+	void Game()
+	{
 		RotMouseCursor();
 		if(Input.GetButtonDown("Fire1"))
 		{
@@ -29,7 +70,7 @@ public class Canon : MonoBehaviour
 		}
 		if(Input.GetButtonUp("Fire1"))
 		{
-			Release();
+			Fire();
 			transform.localScale = Vector3.one;
 		}
 	}
@@ -50,29 +91,34 @@ public class Canon : MonoBehaviour
 		vec.z = -cam.transform.position.z;
 		return cam.ScreenToWorldPoint(vec);
 	}
-	void Release()
+	void Fire()
 	{
 		if(mBullet == null)
 		{
 			return;
 		}
-		mBullet.SetActive(true);
 		var rigid = mBullet.GetComponent<Rigidbody>();
 		if(rigid == null)
 		{
 			return;
 		}
-		rigid.Sleep();
-		rigid.MovePosition(mFireStart.transform.position);
+		mBullet.SetActive(true);
+		rigid.isKinematic = false;
 		rigid.AddForce(transform.forward * mPower);
 	}
-
 	void HoldBegin()
 	{
 		if(mBullet == null)
 		{
 			return;
 		}
+		var rigid = mBullet.GetComponent<Rigidbody>();
+		if(rigid == null)
+		{
+			return;
+		}
+		rigid.isKinematic = true;
+		rigid.transform.position = mFireStart.transform.position;
 		mBullet.SetActive(false);
 		mPower = 0.0f;
 	}
