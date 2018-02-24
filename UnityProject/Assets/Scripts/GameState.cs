@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
 public class GameState : MonoBehaviour
 {
 	[SerializeField]
@@ -9,8 +8,6 @@ public class GameState : MonoBehaviour
 	Text mDebug;
 	[SerializeField]
 	Text mResult;
-	[SerializeField]
-	Text mRecord;
 	public enum State
 	{
 		Game,
@@ -36,6 +33,7 @@ public class GameState : MonoBehaviour
 		mResult.text = "COMPLETE!!";
 		mResult.gameObject.SetActive(true);
 		mWait = 0.0f;
+		mTimer.Total();
 	}
 	public void Clear()
 	{
@@ -43,6 +41,7 @@ public class GameState : MonoBehaviour
 		mResult.text = "CLEAR!!";
 		mResult.gameObject.SetActive(true);
 		mWait = 0.0f;
+		TimerRecord();
 	}
 	public void Game()
 	{
@@ -54,10 +53,13 @@ public class GameState : MonoBehaviour
 	{
 		mTimer.StartTimer();
 	}
-	public void TimerRecord(int inTimer)
+	public void ResetTimer()
+	{
+		mTimer.Reset();
+	}
+	void TimerRecord()
 	{
 		mTimer.StopTimer();
-		mRecord.text = string.Format("{0}: {1}\n", inTimer, System.TimeSpan.FromSeconds(mTimer.mTime));
 	}
 	void Wait(State inState, State inWaitState)
 	{

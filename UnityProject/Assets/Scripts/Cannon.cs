@@ -1,18 +1,14 @@
 ﻿using UnityEngine;
-public class Canon : MonoBehaviour
+public class Cannon : MonoBehaviour
 {
 	[SerializeField]
 	GameState mState;
-
 	[SerializeField]
 	GameObject mBullet;
-
 	[SerializeField]
 	GameObject mFireStart;
-
 	[SerializeField]
 	Block mBlock;
-
 	float mPower;
 	void Game()
 	{
@@ -80,6 +76,7 @@ public class Canon : MonoBehaviour
 		rigid.transform.position = mFireStart.transform.position;
 		mBullet.SetActive(false);
 		mPower = 0.0f;
+		mState.TimerStart();
 	}
 	void Holding()
 	{
@@ -130,6 +127,7 @@ public class Canon : MonoBehaviour
 			{
 				mBlock.InitStage();
 				mState.Game();
+				mState.ResetTimer();
 			}
 			break;
 		}
