@@ -73,13 +73,6 @@ public class Canon : MonoBehaviour
 		{
 			return;
 		}
-	//	var rigid = mBullet.GetComponent<Rigidbody>();
-	//	if(rigid == null)
-	//	{
-	//		return;
-	//	}
-	//	rigid.MovePosition(mFireStart.transform.position);
-	//	rigid.Sleep();
 		mBullet.SetActive(false);
 		mPower = 0.0f;
 	}

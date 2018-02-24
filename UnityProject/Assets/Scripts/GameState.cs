@@ -10,8 +10,10 @@ public class GameState : MonoBehaviour
 	public enum State
 	{
 		Game,
+		ClearWait,
 		Clear,
 	}
+	State mState = State.Game;
 	public void DebugLog(string inLog)
 	{
 		if(mDebug == null)
@@ -20,7 +22,13 @@ public class GameState : MonoBehaviour
 		}
 		mDebug.text = inLog;
 	}
-	void Update()
+	public void Clear()
 	{
+		mState = State.ClearWait;
+		mResult.gameObject.SetActive(true);
+	}
+	void Start()
+	{
+		mResult.gameObject.SetActive(false);
 	}
 }
