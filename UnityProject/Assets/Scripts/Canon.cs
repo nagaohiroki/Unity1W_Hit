@@ -14,47 +14,6 @@ public class Canon : MonoBehaviour
 	Block mBlock;
 
 	float mPower;
-	void Update()
-	{
-		switch(mState.mState)
-		{
-		case GameState.State.GameWait:
-		{
-			Game();
-			break;
-		}
-		case GameState.State.ClearWait:
-		{
-			if(mBlock.IsLast())
-			{
-				if(Input.GetButtonDown("Fire1"))
-				{
-					HoldBegin();
-					mState.Complete();
-				}
-			}
-			else
-			{
-				if(Input.GetButtonDown("Fire1"))
-				{
-					HoldBegin();
-					mBlock.NextStage();
-					mState.Game();
-				}
-			}
-			break;
-		}
-		case GameState.State.CompleteWait:
-		{
-			if(Input.GetButtonDown("Fire1"))
-			{
-				mBlock.InitStage();
-				mState.Game();
-			}
-			break;
-		}
-		}
-	}
 	void Game()
 	{
 		RotMouseCursor();
@@ -134,5 +93,46 @@ public class Canon : MonoBehaviour
 		scale.y = power;
 		scale.z = Mathf.Max(0.1f, 1.0f / (1.0f + mPower * 0.001f));
 		transform.localScale = scale;
+	}
+	void Update()
+	{
+		switch(mState.mState)
+		{
+		case GameState.State.GameWait:
+		{
+			Game();
+			break;
+		}
+		case GameState.State.ClearWait:
+		{
+			if(mBlock.IsLast())
+			{
+				if(Input.GetButtonDown("Fire1"))
+				{
+					HoldBegin();
+					mState.Complete();
+				}
+			}
+			else
+			{
+				if(Input.GetButtonDown("Fire1"))
+				{
+					HoldBegin();
+					mBlock.NextStage();
+					mState.Game();
+				}
+			}
+			break;
+		}
+		case GameState.State.CompleteWait:
+		{
+			if(Input.GetButtonDown("Fire1"))
+			{
+				mBlock.InitStage();
+				mState.Game();
+			}
+			break;
+		}
+		}
 	}
 }

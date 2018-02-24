@@ -4,9 +4,13 @@ using UnityEngine.UI;
 public class GameState : MonoBehaviour
 {
 	[SerializeField]
+	Timer mTimer;
+	[SerializeField]
 	Text mDebug;
 	[SerializeField]
 	Text mResult;
+	[SerializeField]
+	Text mRecord;
 	public enum State
 	{
 		Game,
@@ -46,6 +50,15 @@ public class GameState : MonoBehaviour
 		mResult.gameObject.SetActive(false);
 		mWait = 0.0f;
 	}
+	public void TimerStart()
+	{
+		mTimer.StartTimer();
+	}
+	public void TimerRecord(int inTimer)
+	{
+		mTimer.StopTimer();
+		mRecord.text = string.Format("{0}: {1}\n", inTimer, System.TimeSpan.FromSeconds(mTimer.mTime));
+	}
 	void Wait(State inState, State inWaitState)
 	{
 		if(mState == inState)
@@ -66,5 +79,9 @@ public class GameState : MonoBehaviour
 		Wait(State.Clear, State.ClearWait);
 		Wait(State.Complete, State.CompleteWait);
 		Wait(State.Game, State.GameWait);
+		if(Input.GetKeyDown(KeyCode.D))
+		{
+			mDebug.gameObject.SetActive(!mDebug.gameObject.activeSelf);
+		}
 	}
 }

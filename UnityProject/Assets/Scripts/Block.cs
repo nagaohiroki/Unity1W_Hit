@@ -5,7 +5,7 @@ public class Block : MonoBehaviour
 	[SerializeField]
 	List<GameObject> mBlocks;
 	GameObject mStageInstance;
-	int mStage;
+	public int mStage;
 	public void NextStage()
 	{
 		mStage += 1;
