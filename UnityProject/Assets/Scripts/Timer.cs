@@ -27,9 +27,9 @@ public class Timer : MonoBehaviour
 			return;
 		}
 		mIsCount = false;
-		++mStage;
 		mTotalTime += mTime;
 		mRecord.text += string.Format("Stage{0}: {1}\n", mStage, TimeSpan.FromSeconds((int)mTime));
+		++mStage;
 	}
 	public void Total()
 	{
@@ -39,7 +39,7 @@ public class Timer : MonoBehaviour
 	{
 		mRecord.text = string.Empty;
 		mTimer.text = string.Empty;
-		mStage = 0;
+		mStage = 1;
 		mTotalTime = 0;
 	}
 	void Start()
@@ -51,8 +51,8 @@ public class Timer : MonoBehaviour
 		if(mIsCount)
 		{
 			mTime += Time.deltaTime;
-			TimeSpan span = TimeSpan.FromSeconds((int)mTime);
-			mTimer.text = span.ToString();
+			var span = TimeSpan.FromSeconds((int)mTime);
+			mTimer.text = string.Format("{0}", span);
 		}
 	}
 }
